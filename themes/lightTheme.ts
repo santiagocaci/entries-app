@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { red, teal } from '@mui/material/colors';
+import { cyan, red, teal } from '@mui/material/colors';
 
 export const lightTheme = createTheme({
   palette: {
@@ -15,6 +15,21 @@ export const lightTheme = createTheme({
     },
     error: {
       main: red.A400,
+    },
+  },
+  components: {
+    MuiTypography: {
+      styleOverrides: {},
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: cyan[700],
+        },
+      },
+      defaultProps: {
+        elevation: 0,
+      },
     },
   },
 });

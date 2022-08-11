@@ -1,11 +1,11 @@
 import { createTheme } from '@mui/material';
-import { red, blue } from '@mui/material/colors';
+import { red, cyan } from '@mui/material/colors';
 
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
-    secondary: {
-      main: blue[100],
+    primary: {
+      main: cyan[100],
     },
     error: {
       main: red.A400,
@@ -14,6 +14,16 @@ export const darkTheme = createTheme({
   components: {
     MuiTypography: {
       styleOverrides: {},
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: cyan[700],
+        },
+      },
+      defaultProps: {
+        elevation: 0,
+      },
     },
   },
 });
