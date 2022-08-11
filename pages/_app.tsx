@@ -3,13 +3,16 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import '../styles/globals.css';
 import { darkTheme, lightTheme } from '../themes';
+import { UiProvider } from '../context/ui';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <UiProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </UiProvider>
   );
 }
 
