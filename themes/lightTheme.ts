@@ -31,5 +31,12 @@ export const lightTheme = createTheme({
         elevation: 0,
       },
     },
+    // MuiCard: {
+    //   styleOverrides: {
+    //     root: {
+    //       boxShadow: 'none',
+    //     },
+    //   },
+    // },
   },
 });
