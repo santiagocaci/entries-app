@@ -1,28 +1,38 @@
-import { useState } from 'react';
+import { useContext, useReducer, useState } from 'react';
+
 import { Box, Button, TextField } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import { EntriesContext } from '../../context/entries';
+import { UiContext } from '../../context/ui';
+
 export const NewEntry = () => {
-  const [isAdding, setIsAdding] = useState(false);
+  const { addNewEntry } = useContext(EntriesContext);
+  const { isAddingEntry, setIsAddingEntry } = useContext(UiContext);
+
   const [inputValue, setInputValue] = useState('');
   const [touched, setTouched] = useState(false);
 
-  const onToggleIsAdding = () => {
+  const handleCancelButton = () => {
+    setIsAddingEntry(!isAddingEntry);
     setInputValue('');
-    setIsAdding(!isAdding);
   };
 
   const onSaveEntry = () => {
-    if (inputValue.trim().length === 0) return;
+    if (inputValue.trim().length === 0) return setTouched(true);
 
-    console.log('anashe');
+    addNewEntry(inputValue);
+
+    setInputValue('');
+    setIsAddingEntry(false);
+    setTouched(false);
   };
 
   return (
     <Box marginBottom={2} paddingX={1}>
-      {isAdding ? (
+      {isAddingEntry ? (
         <>
           <TextField
             fullWidth
@@ -37,7 +47,6 @@ export const NewEntry = () => {
             error={inputValue.trim().length <= 0 && touched}
             onChange={e => setInputValue(e.target.value)}
             value={inputValue}
-            onBlur={() => setTouched(true)}
           />
           <Box display='flex' justifyContent='space-between' marginX={2}>
             <Button
@@ -49,7 +58,7 @@ export const NewEntry = () => {
               Save
             </Button>
             <Button
-              onClick={onToggleIsAdding}
+              onClick={handleCancelButton}
               variant='outlined'
               color='secondary'
               endIcon={<CancelIcon />}
@@ -60,7 +69,10 @@ export const NewEntry = () => {
         </>
       ) : (
         <Button
-          onClick={onToggleIsAdding}
+          onClick={() => {
+            if (touched) setTouched(false);
+            setIsAddingEntry(true);
+          }}
           variant='contained'
           startIcon={<AddCircleIcon />}
         >

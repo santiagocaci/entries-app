@@ -7,7 +7,7 @@ const HomePage: NextPage = () => {
   return (
     <Layout title='Home - OpenJira'>
       <Grid container padding={2} spacing={2}>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} md={4}>
           <Card
             sx={{
               height: 'calc(100vh - 96px)',
@@ -20,7 +20,7 @@ const HomePage: NextPage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} md={4}>
           <Card
             sx={{
               height: 'calc(100vh - 96px)',
@@ -32,7 +32,7 @@ const HomePage: NextPage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} md={4}>
           <Card
             sx={{
               height: 'calc(100vh - 96px)',
