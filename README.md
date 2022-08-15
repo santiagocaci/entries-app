@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+- Run this comand:
+
+```bash
+docker-compose up -d
+```
+
+- MongoDB URL Local:
+
+```
+mongodb://localhost:2017/entriesdb
+```
+
 First, run the development server:
 
 ```bash
