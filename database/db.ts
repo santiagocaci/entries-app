@@ -10,27 +10,31 @@ const mongoConnection = {
 };
 
 export const connect = async () => {
-  if (mongoConnection.isConencted) {
-    console.log('connected');
-    return;
-  }
-
-  if (mongoose.connections.length > 0) {
-    mongoConnection.isConencted = mongoose.connections[0].readyState;
-    if (mongoConnection.isConencted === 1) {
-      console.log('usando conexion anterior');
+  try {
+    if (mongoConnection.isConencted) {
+      console.log('ya ESTABAMOS conectados');
       return;
     }
-    await mongoose.disconnect();
-  }
 
-  await mongoose.connect('mongodb://localhost:27017/entriesdb');
-  mongoConnection.isConencted = 1;
-  console.log('conectado a MongoDB: ');
+    if (mongoose.connections.length > 0) {
+      mongoConnection.isConencted = mongoose.connections[0].readyState;
+      if (mongoConnection.isConencted === 1) {
+        console.log('usando conexion anterior');
+        return;
+      }
+      await mongoose.disconnect();
+    }
+
+    await mongoose.connect(process.env.MONGO_URL || '');
+    mongoConnection.isConencted = 1;
+    console.log('conectado a MongoDB:', process.env.MONGO_URL);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const disconnect = async () => {
-  if (mongoConnection.isConencted !== 0) return;
+  if (mongoConnection.isConencted === 0) return;
 
   await mongoose.disconnect();
   console.log('desconectado de mongodb');
