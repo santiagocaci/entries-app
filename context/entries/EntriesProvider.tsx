@@ -1,7 +1,9 @@
-import { FC, PropsWithChildren, useReducer } from 'react';
+import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { entriesApi } from '../../apis';
 
 import { Entry } from '../../interfaces';
+import { IEntry } from '../../models';
 import { EntriesContext, entriesReducer } from './';
 
 export interface EntriesState {
@@ -9,27 +11,7 @@ export interface EntriesState {
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description: 'Pending - Labore id duis fugiat consequat magna.',
-      status: 'pending',
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description: 'In-Progress - Excepteur consectetur anim cupidatat non.',
-      status: 'in-progress',
-      createdAt: Date.now() + 1000000,
-    },
-    {
-      _id: uuidv4(),
-      description:
-        'Finished - Aute Lorem elit eu consectetur occaecat ex consectetur excepteur proident labore magna laboris ex dolor.',
-      status: 'finished',
-      createdAt: Date.now() + 2000000,
-    },
-  ],
+  entries: [],
 };
 
 export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -47,6 +29,15 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const updateEntry = (entry: Entry) =>
     dispatch({ type: '[Entry] - Entry-Updated', payload: entry });
+
+  const getEntries = async () => {
+    const { data } = await entriesApi.get<IEntry[]>('/entries');
+    dispatch({ type: '[Entry] - Refresh-Data', payload: data });
+  };
+
+  useEffect(() => {
+    getEntries();
+  }, []);
 
   return (
     <EntriesContext.Provider

@@ -14,6 +14,13 @@ docker-compose up -d
 mongodb://localhost:2017/entriesdb
 ```
 
+- Llenar la base de datos con pruebas
+
+```bash
+# llamar a este url
+http://localhost:3000/api/seed
+```
+
 First, run the development server:
 
 ```bash
