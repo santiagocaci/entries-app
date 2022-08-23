@@ -1,5 +1,5 @@
+import { AxiosError } from 'axios';
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { entriesApi } from '../../apis';
 
 import { Entry } from '../../interfaces';
@@ -17,18 +17,26 @@ const ENTRIES_INITIAL_STATE: EntriesState = {
 export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE);
 
-  const addNewEntry = (description: string) => {
-    const newEntry: Entry = {
-      _id: uuidv4(),
-      description,
-      status: 'pending',
-      createdAt: Date.now(),
-    };
-    dispatch({ type: '[Entry] - Add-Entry', payload: newEntry });
+  const addNewEntry = async (description: string) => {
+    const { data } = await entriesApi.post<Entry>('/entries', { description });
+
+    dispatch({ type: '[Entry] - Add-Entry', payload: data });
   };
 
-  const updateEntry = (entry: Entry) =>
-    dispatch({ type: '[Entry] - Entry-Updated', payload: entry });
+  const updateEntry = async ({ _id, description, status }: Entry) => {
+    try {
+      const { data: entry } = await entriesApi.put<Entry>(`/entries/${_id}`, {
+        description,
+        status,
+      });
+      dispatch({
+        type: '[Entry] - Entry-Updated',
+        payload: entry,
+      });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
   const getEntries = async () => {
     const { data } = await entriesApi.get<IEntry[]>('/entries');
