@@ -48,6 +48,18 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const deleteEntry = async (id: string) => {
+    try {
+      const { data: entry } = await entriesApi.delete<Entry>(`/entries/${id}`);
+      dispatch({
+        type: '[Entry] - Delete-Entry',
+        payload: entry,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getEntries = async () => {
     const { data } = await entriesApi.get<IEntry[]>('/entries');
     dispatch({ type: '[Entry] - Refresh-Data', payload: data });
@@ -65,6 +77,7 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
         // Methods
         addNewEntry,
         updateEntry,
+        deleteEntry,
       }}
     >
       {children}

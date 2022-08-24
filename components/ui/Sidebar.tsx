@@ -11,7 +11,7 @@ import {
 import InboxIcon from '@mui/icons-material/Inbox';
 import EmailIcon from '@mui/icons-material/Email';
 import { useContext } from 'react';
-import { UiContext } from '../../context/ui';
+import { UiContext } from 'context/ui';
 
 const menuItems: string[] = ['Inbox', 'Starred', 'Send Email', 'Drafts'];
 

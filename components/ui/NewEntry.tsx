@@ -5,8 +5,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-import { EntriesContext } from '../../context/entries';
-import { UiContext } from '../../context/ui';
+import { EntriesContext } from 'context/entries';
+import { UiContext } from 'context/ui';
 
 export const NewEntry = () => {
   const { addNewEntry } = useContext(EntriesContext);

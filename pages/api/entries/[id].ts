@@ -22,7 +22,8 @@ export default function handler(
       return getEntryById(req, res);
     case 'PUT':
       return updateEntry(req, res);
-
+    case 'DELETE':
+      return deleteEntry(req, res);
     default:
       return res
         .status(400)
@@ -71,6 +72,26 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     error instanceof Error ? console.log(error.message) : console.log(error);
 
     res.status(400).json({ message: `Status no valido` });
+  } finally {
+    await db.disconnect();
+  }
+};
+
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+  try {
+    await db.connect();
+    const deleteEntry = await Entry.findByIdAndDelete(id);
+
+    if (!deleteEntry)
+      return res
+        .status(400)
+        .json({ message: `ID: ${id} no existe en la base de datos` });
+
+    return res.status(200).json(deleteEntry);
+  } catch (error) {
+    if (error instanceof Error) console.log(error.message);
+    return res.status(500).json({ message: 'Internal server error' });
   } finally {
     await db.disconnect();
   }
