@@ -2,12 +2,14 @@ import { DragEvent, FC, useContext, useMemo } from 'react';
 import { List, Paper } from '@mui/material';
 
 import { EntriesContext } from 'context/entries';
-import { UiContext } from 'context/ui';
 
 import { Entry, EntryStatus } from 'interfaces';
 import { EntryCard } from './EntryCard';
 
 import styles from './EntryList.module.css';
+
+import { endDraggin, selectDraggin } from 'store/ui';
+import { useAppDispatch, useAppSelector } from 'store';
 
 interface Props {
   status: EntryStatus;
@@ -15,7 +17,8 @@ interface Props {
 
 export const EntryList: FC<Props> = ({ status }) => {
   const { entries, updateEntry } = useContext(EntriesContext);
-  const { isDraggin, endDraggin } = useContext(UiContext);
+  const isDraggin = useAppSelector(selectDraggin);
+  const dispatch = useAppDispatch();
 
   const entriesByStatus = useMemo(
     () => entries.filter(entry => entry.status === status),
@@ -27,7 +30,7 @@ export const EntryList: FC<Props> = ({ status }) => {
     const entry: Entry = entries.find(entry => entry._id === id)!;
     entry.status = status;
     updateEntry(entry);
-    endDraggin();
+    dispatch(endDraggin());
   };
 
   const allowDrop = (event: DragEvent<HTMLDivElement>) => {

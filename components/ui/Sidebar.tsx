@@ -10,16 +10,22 @@ import {
 } from '@mui/material';
 import InboxIcon from '@mui/icons-material/Inbox';
 import EmailIcon from '@mui/icons-material/Email';
-import { useContext } from 'react';
-import { UiContext } from 'context/ui';
+
+import { useAppDispatch, useAppSelector } from 'store';
+import { closeSideBar, selectSideMenu } from 'store/ui';
 
 const menuItems: string[] = ['Inbox', 'Starred', 'Send Email', 'Drafts'];
 
 export const Sidebar = () => {
-  const { sideMenuOpen, closeSideMenu } = useContext(UiContext);
+  const dispatch = useAppDispatch();
+  const sideMenuOpen = useAppSelector(selectSideMenu);
 
   return (
-    <Drawer anchor='left' open={sideMenuOpen} onClose={closeSideMenu}>
+    <Drawer
+      anchor='left'
+      open={sideMenuOpen}
+      onClose={() => dispatch(closeSideBar())}
+    >
       <Box width={250}>
         <Box padding={'5px 10px'}>
           <Typography variant='h4'>Menu</Typography>

@@ -1,4 +1,4 @@
-import { DragEvent, FC, useContext, useMemo } from 'react';
+import { DragEvent, FC, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import {
@@ -10,15 +10,16 @@ import {
 } from '@mui/material';
 
 import { Entry } from 'interfaces';
-import { UiContext } from 'context/ui';
 import { dateFunctions } from 'utils';
+import { endDraggin, startDraggin } from 'store/ui';
+import { useAppDispatch } from 'store';
 
 interface Props {
   entry: Entry;
 }
 
 export const EntryCard: FC<Props> = ({ entry }) => {
-  const { startDraggin, endDraggin } = useContext(UiContext);
+  const dispatch = useAppDispatch();
 
   const router = useRouter();
 
@@ -29,11 +30,11 @@ export const EntryCard: FC<Props> = ({ entry }) => {
 
   const onDragStart = (e: DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text', entry._id);
-    startDraggin();
+    dispatch(startDraggin());
   };
 
-  const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
-    endDraggin();
+  const onDragEnd = () => {
+    dispatch(endDraggin());
   };
 
   const onClickCard = () => {

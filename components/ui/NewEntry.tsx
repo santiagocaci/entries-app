@@ -1,4 +1,4 @@
-import { useContext, useReducer, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { Box, Button, TextField } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
@@ -6,17 +6,21 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { EntriesContext } from 'context/entries';
-import { UiContext } from 'context/ui';
+
+import { useAppDispatch, useAppSelector } from 'store';
+import { selectAddEntry, setIsAddingEntry } from 'store/ui';
 
 export const NewEntry = () => {
   const { addNewEntry } = useContext(EntriesContext);
-  const { isAddingEntry, setIsAddingEntry } = useContext(UiContext);
+
+  const isAddingEntry = useAppSelector(selectAddEntry);
+  const dispatch = useAppDispatch();
 
   const [inputValue, setInputValue] = useState('');
   const [touched, setTouched] = useState(false);
 
   const handleCancelButton = () => {
-    setIsAddingEntry(!isAddingEntry);
+    dispatch(setIsAddingEntry(!isAddingEntry));
     setInputValue('');
   };
 
@@ -26,7 +30,7 @@ export const NewEntry = () => {
     addNewEntry(inputValue);
 
     setInputValue('');
-    setIsAddingEntry(false);
+    dispatch(setIsAddingEntry(false));
     setTouched(false);
   };
 
@@ -71,7 +75,7 @@ export const NewEntry = () => {
         <Button
           onClick={() => {
             if (touched) setTouched(false);
-            setIsAddingEntry(true);
+            dispatch(setIsAddingEntry(true));
           }}
           variant='contained'
           startIcon={<AddCircleIcon />}

@@ -4,20 +4,22 @@ import { SnackbarProvider } from 'notistack';
 
 import 'styles/globals.css';
 import { darkTheme, lightTheme } from 'themes';
-import { UiProvider } from 'context/ui';
+
 import { EntriesProvider } from 'context/entries';
+import { Provider } from 'react-redux';
+import { store } from 'store';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SnackbarProvider maxSnack={3}>
-      <EntriesProvider>
-        <UiProvider>
+      <Provider store={store}>
+        <EntriesProvider>
           <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Component {...pageProps} />
           </ThemeProvider>
-        </UiProvider>
-      </EntriesProvider>
+        </EntriesProvider>
+      </Provider>
     </SnackbarProvider>
   );
 }

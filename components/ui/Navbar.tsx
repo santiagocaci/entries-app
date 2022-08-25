@@ -1,16 +1,22 @@
-import { AppBar, IconButton, Link, Toolbar, Typography } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useContext } from 'react';
-import { UiContext } from 'context/ui';
 import NextLink from 'next/link';
 
+import { AppBar, IconButton, Link, Toolbar, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import { useAppDispatch } from 'store';
+import { openSideBar } from 'store/ui';
+
 export const Navbar = () => {
-  const { openSideMenu } = useContext(UiContext);
+  const dispatch = useAppDispatch();
 
   return (
     <AppBar position='sticky'>
       <Toolbar>
-        <IconButton onClick={openSideMenu} size='large' edge='start'>
+        <IconButton
+          onClick={() => dispatch(openSideBar())}
+          size='large'
+          edge='start'
+        >
           <MenuIcon />
         </IconButton>
         <NextLink href='/' passHref>
