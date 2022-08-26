@@ -15,7 +15,9 @@ export const entriesSlice = createSlice({
   name: 'entries',
   initialState,
   reducers: {
-    resetEntries: () => initialState,
+    resetEntries: () => {
+      initialState;
+    },
   },
   extraReducers: builder => {
     builder
@@ -40,16 +42,13 @@ export const entriesSlice = createSlice({
         };
       })
       .addCase(updateEntry.fulfilled, (state, { payload }) => {
-        return {
-          ...state,
-          entries: state.entries.map(entry => {
-            if (entry._id === payload._id) {
-              entry.description = payload.description;
-              entry.status = payload.status;
-            }
-            return entry;
-          }),
-        };
+        state.entries = state.entries.map(entry => {
+          if (entry._id === payload._id) {
+            entry.description = payload.description;
+            entry.status = payload.status;
+          }
+          return entry;
+        });
       });
   },
 });

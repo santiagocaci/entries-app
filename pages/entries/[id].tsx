@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useContext, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import {
@@ -19,12 +19,13 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { EntriesContext } from 'context/entries';
 import { Layout } from 'components/layouts';
 import { Entry, EntryStatus } from 'interfaces';
 import { dbEntries } from 'database';
 import { dateFunctions } from 'utils';
 import { useRouter } from 'next/router';
+import { useAppDispatch } from 'store';
+import { deleteEntry, updateEntry } from 'store/entries';
 
 const validStatus: EntryStatus[] = ['finished', 'in-progress', 'pending'];
 
@@ -33,7 +34,8 @@ interface Props {
 }
 
 const EntryPage: FC<Props> = ({ entry }) => {
-  const { updateEntry, deleteEntry } = useContext(EntriesContext);
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
 
   const [inputValue, setInputValue] = useState(entry.description);
@@ -60,16 +62,11 @@ const EntryPage: FC<Props> = ({ entry }) => {
       return setTouched(true);
     }
 
-    const updatedEntry: Entry = {
-      ...entry,
-      status,
-      description: inputValue,
-    };
-    updateEntry(updatedEntry, true);
+    dispatch(updateEntry({ entry, status, description: inputValue }));
   };
 
   const onClickDeleteButton = () => {
-    deleteEntry(entry._id);
+    dispatch(deleteEntry(entry._id));
     router.push('/');
   };
 

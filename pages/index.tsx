@@ -2,8 +2,16 @@ import type { NextPage } from 'next';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 import { EntryList, NewEntry } from 'components/ui';
 import { Layout } from 'components/layouts';
+import { useAppDispatch } from 'store';
+import { getEntries } from 'store/entries';
+import { useEffect } from 'react';
 
 const HomePage: NextPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getEntries());
+  }, [dispatch]);
+
   return (
     <Layout title='Home - OpenJira'>
       <Grid container padding={2} spacing={2}>

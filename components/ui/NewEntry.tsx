@@ -1,18 +1,15 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { Box, Button, TextField } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-import { EntriesContext } from 'context/entries';
-
 import { useAppDispatch, useAppSelector } from 'store';
 import { selectAddEntry, setIsAddingEntry } from 'store/ui';
+import { addNewEntry } from 'store/entries';
 
 export const NewEntry = () => {
-  const { addNewEntry } = useContext(EntriesContext);
-
   const isAddingEntry = useAppSelector(selectAddEntry);
   const dispatch = useAppDispatch();
 
@@ -27,7 +24,7 @@ export const NewEntry = () => {
   const onSaveEntry = () => {
     if (inputValue.trim().length === 0) return setTouched(true);
 
-    addNewEntry(inputValue);
+    dispatch(addNewEntry(inputValue));
 
     setInputValue('');
     dispatch(setIsAddingEntry(false));

@@ -1,7 +1,5 @@
-import { DragEvent, FC, useContext, useMemo } from 'react';
+import { DragEvent, FC, useMemo } from 'react';
 import { List, Paper } from '@mui/material';
-
-import { EntriesContext } from 'context/entries';
 
 import { Entry, EntryStatus } from 'interfaces';
 import { EntryCard } from './EntryCard';
@@ -10,26 +8,37 @@ import styles from './EntryList.module.css';
 
 import { endDraggin, selectDraggin } from 'store/ui';
 import { useAppDispatch, useAppSelector } from 'store';
+import { selectEntries } from 'store/entries';
+import { updateEntry } from 'store/entries';
 
 interface Props {
   status: EntryStatus;
 }
 
 export const EntryList: FC<Props> = ({ status }) => {
-  const { entries, updateEntry } = useContext(EntriesContext);
+  const entriesRedux = useAppSelector(selectEntries);
+
   const isDraggin = useAppSelector(selectDraggin);
   const dispatch = useAppDispatch();
 
   const entriesByStatus = useMemo(
-    () => entries.filter(entry => entry.status === status),
-    [entries, status]
+    () => entriesRedux.filter(entry => entry.status === status),
+    [entriesRedux, status]
   );
 
   const onDropEntry = (event: DragEvent<HTMLDivElement>) => {
     const id = event.dataTransfer.getData('text');
-    const entry: Entry = entries.find(entry => entry._id === id)!;
-    entry.status = status;
-    updateEntry(entry);
+    const entry: Entry = entriesRedux.find(entry => entry._id === id)!;
+
+    if (status !== entry.status) {
+      dispatch(
+        updateEntry({
+          entry,
+          description: entry.description,
+          status,
+        })
+      );
+    }
     dispatch(endDraggin());
   };
 

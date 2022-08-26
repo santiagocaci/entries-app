@@ -19,12 +19,20 @@ export const addNewEntry = createAsyncThunk(
 
 export const updateEntry = createAsyncThunk(
   'entries/updateEntry',
-  async ({ _id, description, status }: Entry) => {
-    const { data: entry } = await entriesApi.put<Entry>(`/entries/${_id}`, {
+  async ({
+    entry,
+    description,
+    status,
+  }: {
+    entry: Entry;
+    description: string;
+    status: string;
+  }) => {
+    const { data } = await entriesApi.put<Entry>(`/entries/${entry._id}`, {
       description,
       status,
     });
-    return entry;
+    return data;
   }
 );
 
