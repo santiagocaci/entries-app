@@ -1,11 +1,24 @@
+# Entries App
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-- Run this comand:
+- Rename `.env.example` to `.env.local`
+- Run this command: `yarn docker:up`
+- Run app: `yarn dev`
+
+### Docker command:
 
 ```bash
-docker-compose up -d
+# docker-compose up -d
+yarn docker:up
+
+# docker-compose start
+yarn docker:start
+
+# docker-compose stop
+yarn docker:stop
 ```
 
 - MongoDB URL Local:
@@ -14,10 +27,10 @@ docker-compose up -d
 mongodb://localhost:2017/entriesdb
 ```
 
-- Llenar la base de datos con pruebas
+- Fill database with tests
 
 ```bash
-# llamar a este url
+# Call this url
 http://localhost:3000/api/seed
 ```
 
